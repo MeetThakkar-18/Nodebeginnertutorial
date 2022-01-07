@@ -1,0 +1,41 @@
+{
+  "name": "Nodebeginnertutorial",
+  "version": "0.0.0",
+  "private": false,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "body-parser": "^1.19.1",
+    "dotenv": "^10.0.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "express": "^4.17.2",
+    "express-validator": "^5.3.1",
+    "joi": "^17.5.0",
+    "mongoose": "^6.1.4",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15",
+    "swagger-ui": "^4.1.3",
+    "swagger-ui-express": "^4.3.0",
+    "winston": "^3.3.3"
+  },
+  "description": "Rebuild existing tutorial project with yarn and express-generator",
+  "main": "index.js",
+  "author": "Meet",
+  "license": "MIT",
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.5",
+    "prettier": "2.5.1"
+  }
+}
