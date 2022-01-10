@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const express = require('express');
 
 const app = express();
@@ -7,7 +8,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const swaggerUI = require('swagger-ui-express');
 const expressValidator = require('express-validator');
-const swaggerDocument = require('./swagger.json');
+// const swaggerDocument = require('./swagger.json');
 const tutorialpostRoutes = require('./routes/tutorial');
 
 dotenv.config();
@@ -24,7 +25,7 @@ const myOwnMiddleware = (req, res, next) => {
 };
 app.use(bodyParser.urlencoded({ extended: true }));
 //  middleware
-app.use('/swagger-api', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+// app.use('/swagger-api', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 const port = process.env.PORT || 3200;
 app.listen(port, () => {
