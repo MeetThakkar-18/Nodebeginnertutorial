@@ -1,0 +1,234 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "My Tutorials Manager",
+      "description": "Designed an app to manage Tutorials",
+      "license" : {
+        "name" : "MIT",
+        "url" : "https://opensource.org/licenses/MIT"
+      }
+    },
+    "host": "localhost:3200",
+    "basePath": "/",
+    "tags": [
+      {
+        "name": "Tutorials",
+        "description": "Tutorials Manager"
+      }
+    ],
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+      "/tutorials/post": {
+        "post": {
+          "tags": [
+            "Tutorials"
+          ],
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "description": "Tutorial that we want to add in database",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Tutorials"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],"summary": "Post(add) a tutorial in the system",
+          "responses": {
+            "200": {
+              "description": "New tutorial is created",
+              "schema": {
+                "$ref": "#/definitions/Tutorials"
+              }
+            }
+          }
+        } 
+      },
+      "/tutorials": {
+        "get": {
+            "tags": [
+              "Tutorials"
+            ],
+            "summary": "Get(retrive) all tutorials from the system",
+            "responses": {
+              "200": {
+                "description": "Here you get all the tutorials",
+                "schema": {
+                  "$ref": "#/definitions/Tutorials"
+                }
+              }
+            }
+          }
+      },
+      "/tutorials/sorting/sortdesc": {
+        "get": {
+            "tags": [
+              "Tutorials"
+            ],
+            "summary": "Sort all tutorials from the system in desc",
+            "responses": {
+              "200": {
+                "description": "Here you get all the tutorials",
+                "schema": {
+                  "$ref": "#/definitions/Tutorials"
+                }
+              }
+            }
+          }
+      }, 
+      "/tutorials/put/{id}": {
+        "put": {
+          "summary": "Update Tutorial with give ID",
+          "tags": [
+            "Tutorials"
+          ],
+          "parameters": [
+            {
+              "name": "Tutorials",
+              "in": "body",
+              "description": "Update the tutorials with help of ID",
+              "schema": {
+                "$ref": "#/definitions/updateTutorials"
+              }
+            },
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "ID of the particular tutorial ",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Tutorial is updated",
+              "schema": {
+                "$ref": "#/definitions/Tutorials"
+              }
+            }
+          }
+        }
+      },
+  
+      "/tutorials/search/{title}": {
+        
+        "get": {
+          "summary": "Find the tutorial by Title",
+          "tags": [
+            "Tutorials"
+          ],
+          
+          "parameters": [
+            {
+              "name": "title",
+              "in": "path",
+              "required": true,
+              "description": "Title of the particular tutorial ",
+              "type": "string"
+            },
+            {
+              "name":"sorting",
+              "in":"query",
+              "description":"sort by [asc,desc]",
+              "type":"string",
+              "enum":[
+                "asc","desc"
+              ]
+          },
+          {
+              "name":"at",
+              "in":"query",
+              "description":"sort by [field name]",
+              "type":"string",
+              "enum":[
+                "createdAt","updatedAt"
+              ]
+              }
+          ],
+          "responses": {
+            "200": {
+              "description": "Search by title is done",
+              "schema": {
+                "$ref": "#/definitions/Tutorials"
+              }
+            }
+          }
+        }  
+      },
+      "/tutorials/delete/{id}": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the particular tutorial ",
+            "type": "string"
+          }
+        ],
+        "delete": {
+          "summary": "Delete tutorial with given ID",
+          "tags": [
+            "Tutorials"
+          ],
+          "responses": {
+            "200": {
+              "description": "Tutorial is deleted",
+              "schema": {
+                "$ref": "#/definitions/Tutorials"
+              }
+            }
+          }
+        }  
+      }
+    },
+  
+    "definitions": {
+      "Tutorials": {
+        "required": [
+            "title",
+            "description",
+            "published"
+          ],
+        "properties": {
+          "title": {
+            "type": "string"          
+          },
+          "description": {
+            "type": "string"
+          },
+          "published": {
+            "type": "boolean"
+          }
+        }
+      },
+  
+      "updateTutorials": {
+        "required":[
+          "title",
+          "description",
+          "published"
+        ],
+         "properties": {
+          "title": {
+            "type": "string"          
+          },
+          "description": {
+            "type": "string"
+          },
+          "published": {
+            "type": "boolean"
+          }
+         }
+        }
+        
+      }
+    }
