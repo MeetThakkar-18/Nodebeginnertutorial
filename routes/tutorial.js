@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/search/:title', TutorialController.findTutorial);
 router.get('/', TutorialController.getTutorial);
-router.get('/sorting/sortdesc', TutorialController.getsortTutorial);
+router.get('/sorting/sortdesc', TutorialController.getSortedTutorial);
 router.put('/put/:id', TutorialController.putTutorial);
 router.post('/post', TutorialController.postTutorial);
 router.delete('/delete/:id', TutorialController.deleteTutorial);

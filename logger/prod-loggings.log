@@ -1,0 +1,21 @@
+{"level":"info","message":"The server is running on port : 3200","timestamp":"2022-01-10T10:09:00.323Z"}
+{"level":"info","message":"DB Connected","timestamp":"2022-01-10T10:09:01.214Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:09:50.084Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:10:05.023Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:10:45.116Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:11:46.397Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:12:07.239Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:12:29.114Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:12:30.036Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:12:53.459Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:19:52.390Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:19:53.374Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:20:13.820Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:20:20.277Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:20:34.318Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:21:01.923Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:21:05.638Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:21:16.044Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:35:22.811Z"}
+{"level":"info","message":"middleware applied","timestamp":"2022-01-10T10:36:07.141Z"}
+{"_original":{"description":"","published":true,"title":"Macbook"},"details":[{"context":{"key":"description","label":"description","value":""},"message":"\"description\" is not allowed to be empty","path":["description"],"type":"string.empty"}],"level":"error","message":"\"description\" is not allowed to be empty","stack":"ValidationError: \"description\" is not allowed to be empty","timestamp":"2022-01-10T10:36:07.156Z"}

@@ -1,10 +1,13 @@
 const joi = require('joi');
 
-const joiSchema = joi.object().keys({
-  title: joi.string().trim().min(3).max(100).required(),
-  description: joi.string().trim().min(1).max(5000).required(),
-  published: joi.boolean(),
-});
+const joiSchema = joi
+  .object()
+  .keys({
+    title: joi.string().trim().min(3).max(100).required(),
+    description: joi.string().trim().min(1).max(5000).required(),
+    published: joi.boolean(),
+  })
+  .or('title', 'description', 'published');
 module.exports = { joiSchema };
 
 //  ---------------------express validator-----------------------------------------------

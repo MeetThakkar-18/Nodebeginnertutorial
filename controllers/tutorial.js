@@ -1,84 +1,99 @@
-const express = require('express');
-const TutorialRoutes = require('../routes/tutorial');
-const Tutorial = require('../models/tutorial');
+const tutorial = require('../models/tutorial');
 const { joiSchema } = require('../validators/validate');
+const logger = require('../loggers/logger');
 
-exports.getTutorial = (req, res) => {
+const getTutorial = async (req, res) => {
   try {
-    const tutorial = Tutorial.find().then((tutorial) => {
-      res.json({ tutorial });
-    });
+    let { sorting } = req.query;
+    if (sorting === 'asc') {
+      sorting = 1;
+    } else {
+      sorting = -1;
+    }
+    let { at } = req.query;
+    if (at === 'createdAt') {
+      at = { createdAt: sorting };
+    } else {
+      at = { updatedAt: sorting };
+    }
+    const tutorialdb = await tutorial.find().sort(at);
+    if (tutorialdb) {
+      res.json({ tutorialdb });
+    }
   } catch (error) {
-    res.status(302).json(error.message);
+    logger.error(error);
+    res.send(logger.error(error));
   }
 };
-
-exports.postTutorial = async (req, res) => {
+const getSortedTutorial = async (req, res) => {
+  try {
+    const sort = { updatedAt: -1 };
+    const tutorialdb = await tutorial.find().sort(sort);
+    if (tutorialdb) {
+      res.json({
+        tutorialdb,
+      });
+    }
+  } catch (error) {
+    logger.error(error);
+  }
+};
+const postTutorial = async (req, res) => {
   try {
     const resultvalidated = await joiSchema.validateAsync(req.body);
-    const tutorial = new Tutorial(resultvalidated);
-    tutorial.save().then((result) => {
+    const tutorialdb = await tutorial(resultvalidated);
+    tutorialdb.save();
+    if (tutorialdb) {
       res.status(200).json({
-        tutorial: result,
+        tutorialdb,
       });
-    });
+    }
   } catch (error) {
-    res.status(302).json(error.message);
+    logger.error(error);
   }
 };
-
-exports.putTutorial = async (req, res) => {
+const putTutorial = async (req, res) => {
   try {
     const id = req.params.id.match(/^[0-9a-fA-F]{24}$/);
     if (id == null) {
-      throw new Error('!! Please Enter correct Objectid');
-    }
-    const putvalidate = await joiSchema.validateAsync(req.body);
-    const tutorial = await Tutorial.findByIdAndUpdate(
-      id,
-      {
-        title: putvalidate.title,
-        description: putvalidate.description,
-        published: putvalidate.published,
-      },
-      { new: true }
-    ).then((result) => {
-      if (!result) {
+      throw new Error('check your id');
+    } else {
+      const resultBody = await joiSchema.validateAsync(req.body);
+      const tutorialdb = await tutorial.updateOne({ _id: id }, resultBody);
+
+      if (!tutorialdb.matchedCount) {
         res.send('Tutorial Not Found');
       } else {
         res.json({
-          result,
+          tutorialdb,
         });
       }
-    });
+    }
   } catch (error) {
-    res.status(302).json(error.message);
+    logger.error(error);
   }
 };
-
-exports.deleteTutorial = async (req, res) => {
+const deleteTutorial = (req, res) => {
   try {
     const id = req.params.id.match(/^[0-9a-fA-F]{24}$/);
     if (id == null) {
-      throw new Error('!! Please Enter correct Objectid');
+      throw new Error('check your id');
     }
-    const tutorial = await Tutorial.findByIdAndRemove(id).then((result) => {
-      if (!result) {
-        res.send('Tutorial Not Found');
-      } else {
-        res.status(200).json({
-          result,
-        });
-      }
-    });
+    const tutorialdb = tutorial.findByIdAndRemove(id);
+    if (!tutorialdb.matchedCount) {
+      res.send('Tutorial Not Found');
+    } else {
+      res.json({
+        tutorialdb,
+      });
+    }
   } catch (error) {
-    res.status(302).json(error.message);
+    logger.error(error);
   }
 };
 
-exports.findTutorial = async (req, res) => {
+const findTutorial = async (req, res) => {
   try {
-    // console.log(req.params.title);
     const { title } = req.params;
     let { sorting } = req.query;
     if (sorting === 'asc') {
@@ -86,43 +101,30 @@ exports.findTutorial = async (req, res) => {
     } else {
       sorting = -1;
     }
-    let field = req.query.at;
-    if (field === 'createdAt') {
-      field = { createdAt: sorting };
+    let { at } = req.query;
+    if (at === 'createdAt') {
+      at = { createdAt: sorting };
     } else {
-      field = { updatedAt: sorting };
+      at = { updatedAt: sorting };
     }
-    const tutorial = await Tutorial.find({ title })
-      .sort(field)
-      .then((tutorial) => {
-        if (tutorial == null || tutorial === '') {
-          res.send('Tutorial Not Found');
-        } else {
-          res.json({
-            tutorial,
-          });
-        }
+    const tutorialdb = await tutorial.find({ title }).sort(at);
+    if (!tutorialdb.length) {
+      res.send('Tutorial Not Found');
+    } else {
+      res.json({
+        tutorialdb,
       });
+    }
   } catch (error) {
-    res.status(302).json(error.message);
+    logger.error(error);
   }
 };
 
-exports.getsortTutorial = (req, res) => {
-  try {
-    const mysort = { updatedAt: -1 };
-    const tutorial = Tutorial.find()
-      .sort(mysort)
-      .then((tutorial) => {
-        if (tutorial == null || tutorial === '') {
-          res.send('Tutorial Not Found');
-        } else {
-          res.json({
-            tutorial,
-          });
-        }
-      });
-  } catch (error) {
-    res.status(302).json(error.message);
-  }
+module.exports = {
+  getTutorial,
+  getSortedTutorial,
+  postTutorial,
+  putTutorial,
+  deleteTutorial,
+  findTutorial,
 };

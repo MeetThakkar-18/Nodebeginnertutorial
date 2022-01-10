@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": false,
   "scripts": {
-    "start": "node ./bin/www",
     "dev": "nodemon index.js",
     "cz": "cz",
     "lint:fix": "eslint '*.js' --fix"
