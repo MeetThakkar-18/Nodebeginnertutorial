@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": false,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "dev": "nodemon index.js",
+    "cz": "cz",
+    "lint:fix": "eslint '*.js' --fix"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -22,6 +25,17 @@
     "swagger-ui": "^4.1.3",
     "swagger-ui-express": "^4.3.0",
     "winston": "^3.3.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "npm run lint:fix",
+      "git add ."
+    ]
   },
   "description": "Rebuild existing tutorial project with yarn and express-generator",
   "main": "index.js",
