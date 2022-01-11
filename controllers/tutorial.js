@@ -59,10 +59,10 @@ const putTutorial = async (req, res) => {
       throw new Error('check your id');
     } else {
       const resultBody = await joiSchema.validateAsync(req.body);
-      const tutorialdb = await tutorial.updateOne({ _id: id }, resultBody);
+      const tutorialdb = await tutorial.findOneAndUpdate({ _id: id }, resultBody);
 
-      if (!tutorialdb.matchedCount) {
-        res.send('Tutorial Not Found');
+      if (!tutorialdb) {
+        throw new Error('Tutorial not found');
       } else {
         res.json({
           tutorialdb,
@@ -73,14 +73,15 @@ const putTutorial = async (req, res) => {
     logger.error(error);
   }
 };
-const deleteTutorial = (req, res) => {
+const deleteTutorial = async (req, res) => {
   try {
     const id = req.params.id.match(/^[0-9a-fA-F]{24}$/);
     if (id == null) {
       throw new Error('check your id');
     }
-    const tutorialdb = tutorial.findByIdAndRemove(id);
-    if (!tutorialdb.matchedCount) {
+    const tutorialdb = await tutorial.findByIdAndRemove(id);
+    logger.info(tutorialdb);
+    if (!tutorialdb) {
       res.send('Tutorial Not Found');
     } else {
       res.json({
