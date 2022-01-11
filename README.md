@@ -48,13 +48,13 @@ Tutorials manager project requires [Node.js](https://nodejs.org/)  to run.
 Install the dependencies and devDependencies and start the server.
 
 ```sh
-npm install
+npx yarn install
 ```
 
 To run the project
 
 ```sh
-npm run dev
+npx yarn run dev
 ```
 
 Open any browser and type following link
