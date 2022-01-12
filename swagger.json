@@ -194,7 +194,7 @@
         }  
       },
 
-      "/users": {
+      "/users/getuser": {
         "get": {
             "tags": [
               "Users"
@@ -267,6 +267,31 @@
               }
             }
           } 
+        },
+        "/users/deleteuser/{id}": {
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "ID of the particular user ",
+              "type": "string"
+            }
+          ],
+          "delete": {
+            "summary": "Delete user with given ID",
+            "tags": [
+              "Users"
+            ],
+            "responses": {
+              "200": {
+                "description": "User is deleted",
+                "schema": {
+                  "$ref": "#/definitions/Users"
+                }
+              }
+            }
+          }  
         }
     },
     "definitions": {
