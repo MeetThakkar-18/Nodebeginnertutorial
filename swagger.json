@@ -54,7 +54,10 @@
                 "$ref": "#/definitions/Tutorials"
               }
             }
-          }
+          },
+          "security":[ {
+            "user_auth":[]
+          }]
         } 
       },
       "/tutorials": {
@@ -119,7 +122,10 @@
                 "$ref": "#/definitions/Tutorials"
               }
             }
-          }
+          },
+          "security":[ {
+            "user_auth":[]
+          }]
         }
       },
   
@@ -207,7 +213,10 @@
                   "$ref": "#/definitions/Users"
                 }
               }
-            }
+            },
+            "security":[ {
+              "user_auth":[]
+            }]
           }     
         },
         "/users/register": {
@@ -293,6 +302,13 @@
             }
           }  
         }
+    },
+    "securityDefinitions" : {
+      "user_auth" : {
+        "type" : "apiKey",
+        "in": "header",
+        "name": "auth-token"
+      }
     },
     "definitions": {
       "Tutorials": {

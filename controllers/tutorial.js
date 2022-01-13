@@ -158,11 +158,8 @@ const loginUsers = async (req, res) => {
       return res.status(400).send('Password is incorrect');
     }
     // create and assign a token
-    // eslint-disable-next-line no-underscore-dangle
-    const token = jwt.sign({ _id: userEP._id }, process.env.TOKEN_SECRET);
+    const token = jwt.sign({ _id: userEP._id }, process.env.TOKEN_SECRET, { expiresIn: '12h' });
     res.header('auth-token', token).send(token);
-
-    return res.send('LOGGED IN');
   } catch (error) {
     return res.json(error.message);
   }
