@@ -32,8 +32,8 @@ const getSortedTutorial = async (req, res) => {
 };
 const postTutorial = async (req, res) => {
   try {
-    const resultvalidated = await joiSchema.validateAsync(req.body);
-    const tutorialdb = await tutorial(resultvalidated);
+    const resultValidated = await joiSchema.validateAsync(req.body);
+    const tutorialdb = await tutorial(resultValidated);
     tutorialdb.save();
     if (tutorialdb) {
       res.status(200).json({
@@ -116,19 +116,19 @@ const findTutorial = async (req, res) => {
 // Users api's
 const registerUsers = async (req, res) => {
   try {
-    const resultvalidated = await joiuserSchema.validateAsync(req.body);
+    const resultValidated = await joiuserSchema.validateAsync(req.body);
     // check if user is already registered
-    const emailExist = await user.findOne({ email: resultvalidated.email });
+    const emailExist = await user.findOne({ email: resultValidated.email });
     if (emailExist) {
       return res.status(400).send('Email already exists');
     }
     // hash the password
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(resultvalidated.password, salt);
+    const hashedPassword = await bcrypt.hash(resultValidated.password, salt);
     const userdb = await user({
-      firstname: resultvalidated.firstname,
-      lastname: resultvalidated.lastname,
-      email: resultvalidated.email,
+      firstname: resultValidated.firstname,
+      lastname: resultValidated.lastname,
+      email: resultValidated.email,
       password: hashedPassword,
     });
     userdb.save();
@@ -137,7 +137,6 @@ const registerUsers = async (req, res) => {
         userdb,
       });
     }
-    return res.status(500).send('problem occurs');
   } catch (error) {
     return res.json(error.message);
   }
@@ -145,15 +144,15 @@ const registerUsers = async (req, res) => {
 
 const loginUsers = async (req, res) => {
   try {
-    const resultvalidated = await joiloginSchema.validateAsync(req.body);
+    const resultValidated = await joiloginSchema.validateAsync(req.body);
     // check if email does not exists
-    const userEP = await user.findOne({ email: resultvalidated.email });
+    const userEP = await user.findOne({ email: resultValidated.email });
     if (!userEP) {
       return res.status(400).send('Email does not exists! Register or check email');
     }
 
     // if password is incorrect
-    const checkPass = await bcrypt.compare(resultvalidated.password, userEP.password);
+    const checkPass = await bcrypt.compare(resultValidated.password, userEP.password);
     if (!checkPass) {
       return res.status(400).send('Password is incorrect');
     }
