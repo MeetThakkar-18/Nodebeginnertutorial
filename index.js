@@ -36,3 +36,4 @@ app.use(expressValidator());
 app.use(myOwnMiddleware);
 app.use(express.json());
 app.use('/tutorials', tutorialpostRoutes);
+app.use('/users', tutorialpostRoutes);
