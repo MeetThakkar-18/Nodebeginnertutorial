@@ -1,11 +1,53 @@
 const joi = require('joi');
 
-const joiSchema = joi.object().keys({
-  title: joi.string().trim().min(3).max(100).required(),
-  description: joi.string().trim().min(1).max(5000).required(),
-  published: joi.boolean(),
+const joiSchema = joi
+  .object()
+  .keys({
+    title: joi.string().trim().min(3).max(100).required(),
+    description: joi.string().trim().min(1).max(5000).required(),
+    published: joi.boolean(),
+  })
+  .or('title', 'description', 'published');
+
+const joiuserSchema = joi.object().keys({
+  firstname: joi
+    .string()
+    .pattern(/^[a-zA-Z]{3,100}$/)
+    .trim()
+    .required(),
+  lastname: joi
+    .string()
+    .pattern(/^[a-zA-Z]{3,100}$/)
+    .trim()
+    .required(),
+  email: joi
+    .string()
+    .pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+    .email()
+    .trim()
+    .required(),
+  password: joi
+    .string()
+    .pattern(/^[a-zA-Z0-9]{6,1024}$/)
+    .trim()
+    .required(),
 });
-module.exports = { joiSchema };
+
+const joiloginSchema = joi.object().keys({
+  email: joi
+    .string()
+    .pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+    .email()
+    .trim()
+    .required(),
+  password: joi
+    .string()
+    .pattern(/^[a-zA-Z0-9]{6,1024}$/)
+    .trim()
+    .required(),
+});
+
+module.exports = { joiSchema, joiuserSchema, joiloginSchema };
 
 //  ---------------------express validator-----------------------------------------------
 // exports.createTutorialValidator = (req,res,next) => {

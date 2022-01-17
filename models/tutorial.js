@@ -18,6 +18,7 @@ const TutorialSchema = new mongoose.Schema(
 
     published: {
       type: Boolean,
+      required: true,
     },
   },
   { timestamps: true }
