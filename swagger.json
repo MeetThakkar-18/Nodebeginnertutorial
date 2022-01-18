@@ -277,6 +277,65 @@
             }
           } 
         },
+        "/users/forgotpassword": {
+          "post": {
+            "tags": [
+              "Users"
+            ],
+            "parameters": [
+              {
+                "name": "body",
+                "in": "body",
+                "description": "Forgot Password",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/UsersForgot"
+                }
+              }
+            ],
+            "produces": [
+              "application/json"
+            ],"summary": "Forgot password sending otp in gmail",
+            "responses": {
+              "200": {
+                "description": "Email Send",
+                "schema": {
+                  "$ref": "#/definitions/UsersForgot"
+                }
+              }
+            }
+          } 
+        },
+        "/users/resetpassword": {
+          "put": {
+            "tags": [
+              "Users"
+            ],
+            "parameters": [
+              {
+                "name": "body",
+                "in": "body",
+                "description": "Reset Password",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/UsersReset"
+                }
+              }
+            ],
+            "produces": [
+              "application/json"
+            ],"summary": "Reset password using otp",
+            "responses": {
+              "200": {
+                "description": "Password Reseted",
+                "schema": {
+                  "$ref": "#/definitions/UsersReset"
+                }
+              }
+            }
+          } 
+        },
+        
         "/users/deleteuser/{id}": {
           "parameters": [
             {
@@ -382,6 +441,36 @@
               "type": "string"
             },
             "password": {
+              "type": "string"
+            }
+          }
+        },
+        "UsersForgot": {
+          "required": [
+              "email"
+            ],
+          "properties": {
+
+            "email": {
+              "type": "string"
+            }
+          }
+        },
+        "UsersReset": {
+          "required": [
+              "email",
+              "otp",
+              "newpassword"
+            ],
+          "properties": {
+
+            "email": {
+              "type": "string"
+            },
+            "otp":{
+              "type":"string"
+            },
+            "newpassword": {
               "type": "string"
             }
           }
