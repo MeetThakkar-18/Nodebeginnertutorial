@@ -23,7 +23,7 @@ const sendEmail = async (email, otp) => {
       to: email, // list of receivers
       subject: 'Forgot Password', // Subject line
       text: `Your one time password`, // plain text body
-      html: `<p><b>your one time password is : ${otp} </b> Enter this otp in the swagger reset password section and also enter your new password and click submit then your password will be successfully reseted<p>This otp will get expire in 20 mins</p></p>`, // html body
+      html: `<p><b>your one time password is : ${otp} </b> Enter this otp in the swagger reset password section and also enter your new password and click submit then your password will be successfully reseted<p>This otp will get expire in 2 mins</p></p>`, // html body
     });
     return info.messageId;
   } catch (error) {
@@ -235,7 +235,7 @@ const loginUsers = async (req, res) => {
   try {
     const resultValidated = await joiloginSchema.validateAsync(req.body);
     // check if email does not exists
-    const userEP = await user.findOne({ email: resultValidated.email });
+    const userEP = await user.findOne({ email: resultValidated.email }).select('+password');
     if (!userEP) {
       return res.status(400).send('Email does not exists! Register or check email');
     }
@@ -286,13 +286,21 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const resultValidated = await resetSchema.validateAsync(req.body);
-    const resetdb = await user.findOne({ email: resultValidated.email });
+    const resetdb = await reset.findOne({ email: resultValidated.email, otp: resultValidated.otp });
     if (!resetdb) {
       return res.status(400).send('Please generate a otp or check the mail');
     }
+    // validate old password
+    // const isValidPassword = await bcrypt.compare(user.oldPassword, resultValidated.newPassword);
+
     // encrypt the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(resultValidated.newpassword, salt);
+
+    const passwordExist = await reset.findOne({ password: hashedPassword });
+    if (passwordExist) {
+      return res.status(400).send('Password already exists');
+    }
     // update the password
     const userupdated = await user.findOneAndUpdate({ email: resultValidated.email }, { password: hashedPassword });
     if (!userupdated) {

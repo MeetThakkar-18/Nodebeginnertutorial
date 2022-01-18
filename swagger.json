@@ -210,7 +210,7 @@
               "200": {
                 "description": "Here you get all the users",
                 "schema": {
-                  "$ref": "#/definitions/Users"
+                  "$ref": "#/definitions/UsersGetDelete"
                 }
               }
             },
@@ -355,7 +355,7 @@
               "200": {
                 "description": "User is deleted",
                 "schema": {
-                  "$ref": "#/definitions/Users"
+                  "$ref": "#/definitions/UsersGetDelete"
                 }
               }
             }
@@ -473,6 +473,24 @@
             "newpassword": {
               "type": "string"
             }
+          }
+        },
+        "UsersGetDelete":{
+          "required": [
+            "firstname",
+            "lastname",
+            "email"
+          ],
+        "properties": {
+          "firstname": {
+            "type": "string"          
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
           }
         }
       }
