@@ -290,17 +290,17 @@ const resetPassword = async (req, res) => {
     if (!resetdb) {
       return res.status(400).send('Please generate a otp or check the mail');
     }
-    // validate old password
-    // const isValidPassword = await bcrypt.compare(user.oldPassword, resultValidated.newPassword);
+    // check the old password with the new password
+    const userdb = await user.findOne({ email: resultValidated.email });
+    const passwordcheck = await bcrypt.compare(resultValidated.newpassword, userdb.password);
+    if (passwordcheck) {
+      throw new Error('Password should not be the same as old password');
+    }
 
     // encrypt the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(resultValidated.newpassword, salt);
 
-    const passwordExist = await reset.findOne({ password: hashedPassword });
-    if (passwordExist) {
-      return res.status(400).send('Password already exists');
-    }
     // update the password
     const userupdated = await user.findOneAndUpdate({ email: resultValidated.email }, { password: hashedPassword });
     if (!userupdated) {
