@@ -27,6 +27,7 @@ const UserSchema = new mongoose.Schema(
       min: 6,
       max: 1024,
       required: true,
+      select: false,
     },
   },
   { timestamps: true }
