@@ -1,6 +1,6 @@
 const express = require('express');
 const TutorialController = require('../controllers/tutorial');
-const verify = require('../token');
+const verify = require('../helpers/token');
 
 const router = express.Router();
 

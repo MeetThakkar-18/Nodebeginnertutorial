@@ -9,17 +9,18 @@ const swaggerUI = require('swagger-ui-express');
 const expressValidator = require('express-validator');
 const swaggerDocument = require('./swagger.json');
 const tutorialpostRoutes = require('./routes/tutorial');
+const logger = require('./loggers/logger');
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URI).then(() => console.log('DB Connected'));
+mongoose.connect(process.env.MONGO_URI).then(() => logger.info('DB Connected'));
 
 mongoose.connection.on('error', (err) => {
-  console.log(`DB Connection error : ${err.message}`);
+  logger.error(`DB Connection error : ${err.message}`);
 });
 
 const myOwnMiddleware = (req, res, next) => {
-  console.log('middleware applied');
+  logger.info('middleware applied');
   next();
 };
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,7 +29,7 @@ app.use('/swagger-api', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 const port = process.env.PORT || 3200;
 app.listen(port, () => {
-  console.log(`The server is running on port : ${port}`);
+  logger.info(`The server is running on port : ${port}`);
 });
 
 app.use(morgan('dev'));
