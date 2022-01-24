@@ -69,5 +69,5 @@ Open any browser and type following link
 ```sh
 localhost:3200/swagger-api
 ```
--A screenshot of main page(home page) of tutorial manager project
+- A screenshot of main page(home page) of tutorial manager project
 ![TutorialHomepage.png](public/images/TutorialHomepage.png?raw=true 'Tutorial Manager')
