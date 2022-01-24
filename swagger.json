@@ -15,6 +15,10 @@
       {
         "name": "Tutorials",
         "description": "Tutorials Manager"
+      },
+      {
+        "name": "Users",
+        "description": "Authentication users"
       }
     ],
     "consumes": [
@@ -50,7 +54,10 @@
                 "$ref": "#/definitions/Tutorials"
               }
             }
-          }
+          },
+          "security":[ {
+            "user_auth":[]
+          }]
         } 
       },
       "/tutorials": {
@@ -115,7 +122,10 @@
                 "$ref": "#/definitions/Tutorials"
               }
             }
-          }
+          },
+          "security":[ {
+            "user_auth":[]
+          }]
         }
       },
   
@@ -188,9 +198,177 @@
             }
           }
         }  
+      },
+
+      "/users/getuser": {
+        "get": {
+            "tags": [
+              "Users"
+            ],
+            "summary": "Get all users from the system",
+            "responses": {
+              "200": {
+                "description": "Here you get all the users",
+                "schema": {
+                  "$ref": "#/definitions/UsersGetDelete"
+                }
+              }
+            },
+            "security":[ {
+              "user_auth":[]
+            }]
+          }     
+        },
+        "/users/register": {
+          "post": {
+            "tags": [
+              "Users"
+            ],
+            "parameters": [
+              {
+                "name": "body",
+                "in": "body",
+                "description": "Register the user",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/Users"
+                }
+              }
+            ],
+            "produces": [
+              "application/json"
+            ],"summary": "Register a user in the system",
+            "responses": {
+              "200": {
+                "description": "New user is created",
+                "schema": {
+                  "$ref": "#/definitions/Users"
+                }
+              }
+            }
+          } 
+        },
+        "/users/login": {
+          "post": {
+            "tags": [
+              "Users"
+            ],
+            "parameters": [
+              {
+                "name": "body",
+                "in": "body",
+                "description": "Login the user",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/UsersLogin"
+                }
+              }
+            ],
+            "produces": [
+              "application/json"
+            ],"summary": "Logged in a user from the system",
+            "responses": {
+              "200": {
+                "description": "user is loggedin",
+                "schema": {
+                  "$ref": "#/definitions/UsersLogin"
+                }
+              }
+            }
+          } 
+        },
+        "/users/forgotpassword": {
+          "post": {
+            "tags": [
+              "Users"
+            ],
+            "parameters": [
+              {
+                "name": "body",
+                "in": "body",
+                "description": "Forgot Password",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/UsersForgot"
+                }
+              }
+            ],
+            "produces": [
+              "application/json"
+            ],"summary": "Forgot password sending otp in gmail",
+            "responses": {
+              "200": {
+                "description": "Email Send",
+                "schema": {
+                  "$ref": "#/definitions/UsersForgot"
+                }
+              }
+            }
+          } 
+        },
+        "/users/resetpassword": {
+          "put": {
+            "tags": [
+              "Users"
+            ],
+            "parameters": [
+              {
+                "name": "body",
+                "in": "body",
+                "description": "Reset Password",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/UsersReset"
+                }
+              }
+            ],
+            "produces": [
+              "application/json"
+            ],"summary": "Reset password using otp",
+            "responses": {
+              "200": {
+                "description": "Password Reseted",
+                "schema": {
+                  "$ref": "#/definitions/UsersReset"
+                }
+              }
+            }
+          } 
+        },
+        
+        "/users/deleteuser/{id}": {
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "ID of the particular user ",
+              "type": "string"
+            }
+          ],
+          "delete": {
+            "summary": "Delete user with given ID",
+            "tags": [
+              "Users"
+            ],
+            "responses": {
+              "200": {
+                "description": "User is deleted",
+                "schema": {
+                  "$ref": "#/definitions/UsersGetDelete"
+                }
+              }
+            }
+          }  
+        }
+    },
+    "securityDefinitions" : {
+      "user_auth" : {
+        "type" : "apiKey",
+        "in": "header",
+        "name": "auth-token"
       }
     },
-  
     "definitions": {
       "Tutorials": {
         "required": [
@@ -228,7 +406,92 @@
             "type": "boolean"
           }
          }
-        }
+        },
         
+        "Users": {
+          "required": [
+              "firstname",
+              "lastname",
+              "email",
+              "password"
+            ],
+          "properties": {
+            "firstname": {
+              "type": "string"          
+            },
+            "lastname": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          }
+        },
+        "UsersLogin": {
+          "required": [
+              "email",
+              "password"
+            ],
+          "properties": {
+
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          }
+        },
+        "UsersForgot": {
+          "required": [
+              "email"
+            ],
+          "properties": {
+
+            "email": {
+              "type": "string"
+            }
+          }
+        },
+        "UsersReset": {
+          "required": [
+              "email",
+              "otp",
+              "newpassword"
+            ],
+          "properties": {
+
+            "email": {
+              "type": "string"
+            },
+            "otp":{
+              "type":"string"
+            },
+            "newpassword": {
+              "type": "string"
+            }
+          }
+        },
+        "UsersGetDelete":{
+          "required": [
+            "firstname",
+            "lastname",
+            "email"
+          ],
+        "properties": {
+          "firstname": {
+            "type": "string"          
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+          }
+        }
       }
     }

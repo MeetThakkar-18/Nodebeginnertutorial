@@ -1,30 +1,84 @@
 const joi = require('joi');
 
-const joiSchema = joi.object().keys({
-  title: joi.string().trim().min(3).max(100).required(),
-  description: joi.string().trim().min(1).max(5000).required(),
-  published: joi.boolean(),
+// validation schema for tutorials
+const joiSchema = joi
+  .object()
+  .keys({
+    title: joi.string().trim().min(3).max(100).required(),
+    description: joi.string().trim().min(1).max(5000).required(),
+    published: joi.boolean(),
+  })
+  .or('title', 'description', 'published');
+
+// validation schema for user register
+
+const joiuserSchema = joi.object().keys({
+  firstname: joi
+    .string()
+    .pattern(/^[a-zA-Z]{3,100}$/)
+    .trim()
+    .required(),
+  lastname: joi
+    .string()
+    .pattern(/^[a-zA-Z]{3,100}$/)
+    .trim()
+    .required(),
+  email: joi
+    .string()
+    .pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+    .email()
+    .trim()
+    .required(),
+  password: joi
+    .string()
+    .pattern(/^[a-zA-Z0-9]{6,1024}$/)
+    .trim()
+    .required(),
 });
-module.exports = { joiSchema };
 
-//  ---------------------express validator-----------------------------------------------
-// exports.createTutorialValidator = (req,res,next) => {
-//     req.check('title','Write a title , Title is must required').notEmpty()
-//     req.check('title','Title must be between 3 to 100 character').isLength({
-//        min:3,
-//        max:100
-//     });
+// validation schema for user login
 
-//     req.check('description','Write a description , it is required').notEmpty()
-//     req.check('description','Description must be between 1 to 5000 character').isLength({
-//        min:1,
-//        max:5000
-//     });
+const joiloginSchema = joi.object().keys({
+  email: joi
+    .string()
+    .pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+    .email()
+    .trim()
+    .required(),
+  password: joi
+    .string()
+    .pattern(/^[a-zA-Z0-9]{6,1024}$/)
+    .trim()
+    .required(),
+});
 
-//     const errors = req.validationErrors()
-//     if(errors){
-//         const firstError = errors.map((error) => error.msg)[0]
-//         return res.status(400).json({error: firstError})
-//     }
-//     next();
-// };
+// validation schema for forgot password
+
+const forgotSchema = joi.object().keys({
+  email: joi
+    .string()
+    .pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+    .email()
+    .trim()
+    .required(),
+});
+
+// validation schema for reset password
+
+const resetSchema = joi.object().keys({
+  email: joi
+    .string()
+    .pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+    .email()
+    .trim()
+    .required(),
+  newpassword: joi
+    .string()
+    .pattern(/^[a-zA-Z0-9]{6,1024}$/)
+    .trim()
+    .required(),
+  otp: joi.string().trim().min(6).max(6).alphanum().required(),
+});
+
+// exports of joi schemas
+module.exports = { joiSchema, joiuserSchema, joiloginSchema, forgotSchema, resetSchema };
